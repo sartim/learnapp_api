@@ -143,7 +143,7 @@ class AccountView(MethodView):
                     app.logger.warning(message)
                     return jsonify(message=message), 400
                 try:
-                    if account_user.id == logged_in_user.id:
+                    if account_user.id == current_user.id:
                         account_user.first_name = first_name if first_name else account_user.first_name
                         account_user.middle_name = middle_name if middle_name else account_user.middle_name
                         account_user.last_name = last_name if last_name else account_user.last_name
@@ -158,7 +158,7 @@ class AccountView(MethodView):
                     app.logger.exception('Exception occurred')
                     return jsonify(message='An error occurred. {}'.format(str(e))), 400
             app.logger.warning('{} trying to update user details with {} who does not exist'.
-                               format(logged_in_user.name, body['id']))
+                               format(current_user.first_name, body['id']))
             return jsonify(message='User with id {} does not exist'.format(body['id'])), 404
         else:
             app.logger.warning('User submitted request with content type header not being application/json')
