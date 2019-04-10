@@ -1,14 +1,10 @@
 import logging
 import sys
-import csv
-import uuid
 import os
-import random
 
 from click import prompt
 from flask_migrate import MigrateCommand, Migrate
 from flask_script import Manager, prompt_bool, Shell, prompt_pass
-from app import db
 from app.account.role.models import AccountRole
 from app.account.user.models import AccountUser
 from app.account.user.role.models import AccountUserRole
