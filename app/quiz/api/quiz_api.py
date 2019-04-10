@@ -21,6 +21,7 @@ class QuizApi(MethodView):
         return jsonify(Quiz.get_owned(page))
 
     @cross_origin()
+    @jwt_required
     def post(self):
         body = request.data
         keys = ['name', 'description', 'creator_id', 'video_url']
@@ -43,7 +44,7 @@ class QuizApi(MethodView):
                 quiz = Quiz(name=name, description=description, creator_id=creator_id, video_url=video_url)
                 quiz.create(quiz)
                 quiz.save()
-                app.logger.debug("Successfully saved new user with")
+                app.logger.debug("Successfully saved quiz")
                 return jsonify(message="Successfully created!"), 201
             except Exception as e:
                 app.logger.exception('Exception occurred')
@@ -62,36 +63,75 @@ class QuizApi(MethodView):
             if not validated["success"]:
                 app.logger.warning(
                     '{current_user} made request with invalid fields: \n {request_body}'
-                        .format(current_user=current_user.full_name, request_body=body))
+                        .format(current_user=current_user.get_full_name, request_body=body))
                 return jsonify(validated['data']), 400
         if request.is_json:
             body = request.get_json()
             validated = validator.field_validator(keys, body)
             if not validated["success"]:
-                app.logger.warning('{} made request with invalid fields: \n {}'.format(current_user.full_name, body))
+                app.logger.warning('{} made request with invalid fields: \n {}'.format(current_user.get_full_name, body))
                 return jsonify(validated['data']), 400
             quiz = Quiz.get_by_id(body['id'])
+            current_user_roles = AccountUser.get_current_user_roles()
+            if 'TUTOR' in current_user_roles or 'LEARNER' in current_user_roles:
+                if quiz.creator_id != current_user.id:
+                    return jsonify(message='You are not allowed to update this quiz!'), 403
             if quiz:
-                id = body['id']
                 name = body['name'] if 'name' in body else quiz.name
                 description = body['description'] if 'description' in body else quiz.description
                 video_url = body['video_url'] if 'video_url' in body else quiz.video_url
-
-
+                time_to_take = body['time_to_take'] if 'time_to_take' in body else quiz.time_to_take
+                needs_invite = body['needs_invite'] if 'needs_invite' in body else quiz.needs_invite
                 try:
-                    pass
+                    quiz.name = name
+                    quiz.description = description
+                    quiz.video_url = video_url
+                    quiz.time_to_take = time_to_take
+                    quiz.needs_invite = needs_invite
+                    quiz.save()
+                    return jsonify(message='Successfully updated!'), 200
                 except Exception as e:
                     app.logger.exception('Exception occurred')
                     return jsonify(message='An error occurred. {}'.format(str(e))), 400
-            app.logger.warning('{} trying to update user details with {} who does not exist'.
+            app.logger.warning('{} trying to update quiz details with {} which does not exist'.
                                format(current_user.name, body['id']))
-            return jsonify(message='User with id {} does not exist'.format(body['id'])), 404
-
+            return jsonify(message='Quiz with id {} does not exist'.format(body['id'])), 404
 
     @cross_origin()
     @jwt_required
     def delete(self):
-        pass
+        body = request.data
+        keys = ['id']
+        if not body:
+            validated = validator.field_validator(keys, {})
+            if not validated["success"]:
+                app.logger.warning(
+                    '{current_user} made request with invalid fields: \n {request_body}'
+                        .format(current_user=current_user.get_full_name, request_body=body))
+                return jsonify(validated['data']), 400
+        if request.is_json:
+            body = request.get_json()
+            validated = validator.field_validator(keys, body)
+            if not validated["success"]:
+                app.logger.warning(
+                    '{} made request with invalid fields: \n {}'.format(current_user.get_full_name, body))
+                return jsonify(validated['data']), 400
+            quiz = Quiz.get_by_id(body['id'])
+            current_user_roles = AccountUser.get_current_user_roles()
+            if 'TUTOR' in current_user_roles or 'LEARNER' in current_user_roles:
+                if quiz.creator_id != current_user.id:
+                    return jsonify(message='You are not allowed to delete this quiz!'), 403
+            if quiz:
+                try:
+                    quiz.delete()
+                    quiz.save()
+                    return jsonify(message='Successfully deleted!'), 200
+                except Exception as e:
+                    app.logger.exception('Exception occurred')
+                    return jsonify(message='An error occurred. {}'.format(str(e))), 400
+            app.logger.warning('{} trying to update quiz details with {} which does not exist'.
+                               format(current_user.name, body['id']))
+            return jsonify(message='Quiz with id {} does not exist'.format(body['id'])), 404
 
 
 app.add_url_rule('/quiz/', view_func=QuizApi.as_view('quiz'),
