@@ -3,6 +3,7 @@ from flask.views import MethodView
 from flask_cors import cross_origin
 from flask_jwt_extended import jwt_required, current_user
 from app import app
+from app.account.role.models import AccountRole
 from app.account.user.models import AccountUser
 from app.account.user.role.models import AccountUserRole
 from app.helpers import validator, utils
@@ -50,7 +51,7 @@ class AccountView(MethodView):
     @cross_origin()
     def post(self):
         body = request.data
-        keys = ['first_name', 'last_name', 'email', 'phone', 'password', 'role_id']
+        keys = ['first_name', 'last_name', 'email', 'phone', 'password', 'role']
         if not body:
             validated = validator.field_validator(keys, {})
             if not validated["success"]:
@@ -78,12 +79,16 @@ class AccountView(MethodView):
                 message = 'User with the phone {} exists'.format(phone)
                 app.logger.warning(message)
                 return jsonify(message=message), 400
+            role = AccountRole.get_by_name(body['role'])
+            if role == 1 or role == 2:
+                if not current_user:
+                    return jsonify(message='Forbidden to create user with the roles'), 403
             try:
                 account_user = AccountUser(first_name=first_name, middle_name=middle_name, last_name=last_name,
                                            email=email, phone=phone, password=password)
                 account_user = account_user.create(account_user)
                 account_user.save()
-                account_user_role = AccountUserRole(user_id=account_user.id, role_id=body['role_id'])
+                account_user_role = AccountUserRole(user_id=account_user.id, role_id=role.id)
                 account_user_role = account_user_role.create(account_user_role)
                 account_user_role.save()
                 app.logger.debug("Successfully saved new user with")
