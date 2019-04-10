@@ -34,9 +34,9 @@ class Quiz(Base):
         results = []
         for obj in paginated_objs.items:
             data = dict(
-                name=obj.name, description=obj.description, creator_id=obj.creator.get_full_name(),
+                id=obj.id, name=obj.name, description=obj.description, creator=obj.creator.get_full_name(),
                 video_url=obj.video_url,
-                time_to_take=obj.time_to_take, needs_invite=obj.needs_invite
+                time_to_take=obj.time_to_take, needs_invite=obj.needs_invite, created_date=obj.created_date
             )
             results.append(data)
         data = utils.response_dict(paginated_objs, results, url)
