@@ -2,6 +2,7 @@ import os
 
 from flask_jwt_extended import current_user
 from app import db
+from app.account.user.models import AccountUser
 from app.core.models import Base
 from app.helpers import utils
 
@@ -17,6 +18,8 @@ class Quiz(Base):
     time_to_take = db.Column(db.Integer, nullable=True)
     needs_invite = db.Column(db.Boolean, default=False)
 
+    creator = db.relationship(AccountUser, backref='creator', lazy=True)
+
     def __init__(self, name=None, description=None, creator_id=None, video_url=None, time_to_take=None,
                  needs_invite=None):
         self.name = name
@@ -31,7 +34,8 @@ class Quiz(Base):
         results = []
         for obj in paginated_objs.items:
             data = dict(
-                name=obj.name, description=obj.description, creator_id=obj.creator_id, video_url=obj.video_url,
+                name=obj.name, description=obj.description, creator_id=obj.creator.get_full_name(),
+                video_url=obj.video_url,
                 time_to_take=obj.time_to_take, needs_invite=obj.needs_invite
             )
             results.append(data)
