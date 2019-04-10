@@ -32,7 +32,6 @@ class GenerateJwt(MethodView):
                     user=dict(id=user.id, full_name="{} {}".format(user.first_name, user.last_name),
                               email=user.email, roles=[v.role.name for v in user.roles])
                 )
-                print(results)
                 return jsonify(results), 200
             else:
                 app.logger.warning("User with the email {0} does not exist".format(email), extra={'stack': True})
