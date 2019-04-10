@@ -3,36 +3,31 @@ from app import app, db
 from app.account.role.models import AccountRole
 from app.account.user.models import AccountUser
 from app.account.user.role.models import AccountUserRole
-from app.product.models import Product
-from app.product.category.models import ProductCategory
-from app.order.models import Order
-from app.order.status.models import OrderStatus
+from app.quiz.models import Quiz
+from app.quiz.question.models import QuizQuestion
+from app.quiz.question.answer.models import QuizQuestionAnswer
+from app.quiz.question.type.models import QuizQuestionType
+from app.quiz.section.models import QuizSection
+from app.quiz.status.models import QuizStatus
+from app.mentor_requests.models import MentorRequest
+from app.quiz.invite.models import QuizInvite
 from app.helpers import utils
 from app.api_imports import *
+from manage import add_roles, add_demo_users, add_quizzes_data
 
 
 class Base:
     @classmethod
     def setup_class(cls):
+        cls.client = app.test_client()
         with app.app_context():
             Migrate(app, db)
             upgrade()
             db.create_all()
 
-            objects = [
-                AccountRole(name='SUPERUSER'), AccountRole(name='ADMIN'), AccountRole(name='STAFF'),
-                AccountRole(name='CLIENT')
-            ]
-            db.session.bulk_save_objects(objects)
-            db.session.commit()
-
-            user = AccountUser(first_name="Test", last_name="User", email="test@mail.com",
-                               password=utils.generate_password_hash("letmein"), is_active=True)
-            db.session.add(user)
-            db.session.commit()
-            user_role = AccountUserRole(user_id=user.id, role_id=3)
-            db.session.add(user_role)
-            db.session.commit()
+            add_roles()
+            add_demo_users()
+            add_quizzes_data()
 
     @classmethod
     def teardown_class(cls):
