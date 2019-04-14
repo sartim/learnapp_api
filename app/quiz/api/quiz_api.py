@@ -14,17 +14,24 @@ class QuizApi(MethodView):
     @jwt_required
     def get(self):
         page = request.args.get('page')
+        quiz_id = request.args.get('id')
+        if quiz_id:
+            quiz = Quiz.get_by_id(quiz_id)
+            quiz_dict = quiz.__dict__
+            del quiz_dict['_sa_instance_state']
+            return jsonify(quiz_dict)
         current_user_roles = AccountUser.get_current_user_roles()
         if 'ADMIN' in current_user_roles or 'SUPERUSER' in current_user_roles \
                 and 'TUTOR' not in current_user_roles and 'LEARNER' not in current_user_roles:
             return jsonify(Quiz.get_all(page))
+
         return jsonify(Quiz.get_owned(page))
 
     @cross_origin()
     @jwt_required
     def post(self):
         body = request.data
-        keys = ['name', 'description', 'creator_id', 'video_url']
+        keys = ['name', 'description']
         if not body:
             validated = validator.field_validator(keys, {})
             if not validated["success"]:
@@ -38,7 +45,7 @@ class QuizApi(MethodView):
                 return jsonify(jsonify=validated['data'])
             name = body['name']
             description = body['description']
-            creator_id = body['creator_id']
+            creator_id = current_user.id
             video_url = body['video_url']
             try:
                 quiz = Quiz(name=name, description=description, creator_id=creator_id, video_url=video_url)
