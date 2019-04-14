@@ -97,15 +97,16 @@ def add_quiz_questions_data():
     objects = [
         QuizQuestion(
             quiz_id=1, question='What is the string output import?', question_type_id=2,
-            choices=[dict(a='#include<stdioh>', b='include<stdioh>', c='include<strout>', d='#include<strout>')]
+            choices=[dict(a='#include<stdioh>', b='include<stdioh>', c='include<strout>', d='#include<strout>')],
+            answer='#include<stdioh>'
         ),
         QuizQuestion(
             quiz_id=1, question='Print statement?', question_type_id=2,
-            choices=[dict(a='printf()', b='print()', c='print', d='prinln')]
+            choices=[dict(a='printf()', b='print()', c='print', d='prinln')], answer='print()'
         ),
         QuizQuestion(
             quiz_id=1, question='Which of the following is an access modifier?', question_type_id=2,
-            choices=[dict(a='private', b='strout', c='math', d='stdout')]
+            choices=[dict(a='private', b='strout', c='math', d='stdout')], answer='private'
         )
     ]
     db.session.bulk_save_objects(objects)
@@ -113,8 +114,8 @@ def add_quiz_questions_data():
 
 
 def add_tutorship_requests_data():
-    objects = [MentorRequest(sender_id=2, receiver_id=1)]
-    db.session.bulk_save_objects(objects)
+    object = MentorRequest(sender_id=2, receiver_id=1)
+    db.session.add(object)
     db.session.commit()
 
 
