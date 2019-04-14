@@ -20,12 +20,9 @@ class QuizApi(MethodView):
             quiz_dict = quiz.__dict__
             del quiz_dict['_sa_instance_state']
             return jsonify(quiz_dict)
-        current_user_roles = AccountUser.get_current_user_roles()
-        if 'ADMIN' in current_user_roles or 'SUPERUSER' in current_user_roles \
-                and 'TUTOR' not in current_user_roles and 'LEARNER' not in current_user_roles:
-            return jsonify(Quiz.get_all(page))
-
-        return jsonify(Quiz.get_owned(page))
+        if request.args.get('owned'):
+            return jsonify(Quiz.get_owned(page))
+        return jsonify(Quiz.get_all(page))
 
     @cross_origin()
     @jwt_required
