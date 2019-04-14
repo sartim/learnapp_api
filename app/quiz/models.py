@@ -18,6 +18,7 @@ class Quiz(Base):
     needs_invite = db.Column(db.Boolean, default=False)
 
     creator = db.relationship('AccountUser', backref='creator', lazy=True)
+    questions = db.relationship('QuizQuestion', backref='quiz_questions', lazy=True)
 
     def __init__(self, name=None, description=None, creator_id=None, video_url=None, time_to_take=None,
                  needs_invite=None):
