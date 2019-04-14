@@ -9,8 +9,12 @@ class MentorRequest(Base):
     sender_id = db.Column(db.Integer, db.ForeignKey('account_users.id'), primary_key=True)
     receiver_id = db.Column(db.Integer, db.ForeignKey('account_users.id'), primary_key=True)
 
-    def __init__(self, name=None):
-        self.name = name
+    sender_user = db.relationship('AccountUser', foreign_keys='MentorRequest.sender_id')
+    receiver_user = db.relationship('AccountUser', foreign_keys='MentorRequest.receiver_id')
+
+    def __init__(self, sender_id=None, receiver_id=None):
+        self.sender_id = sender_id
+        self.receiver_id = receiver_id
 
     def __repr__(self):
-        return "%s(%s)" % (self.__class__.__name__, self.name)
+        return "%s(%s, %s)" % (self.__class__.__name__, self.sender_id, self.receiver_id)
