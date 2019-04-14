@@ -6,8 +6,8 @@ class MentorRequest(Base):
 
     __tablename__ = 'mentor_requests'
 
-    sender_id = db.Column(db.Integer, db.ForeignKey('account_users.id'), primary_key=True)
-    receiver_id = db.Column(db.Integer, db.ForeignKey('account_users.id'), primary_key=True)
+    sender_id = db.Column(db.Integer, db.ForeignKey('account_users.id'))
+    receiver_id = db.Column(db.Integer, db.ForeignKey('account_users.id'))
 
     sender_user = db.relationship('AccountUser', foreign_keys='MentorRequest.sender_id')
     receiver_user = db.relationship('AccountUser', foreign_keys='MentorRequest.receiver_id')
