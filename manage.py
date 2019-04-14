@@ -64,6 +64,18 @@ def add_demo_users():
     db.session.commit()
 
 
+def add_question_type_data():
+    objects = [QuizQuestionType(name="open"), QuizQuestionType(name="multichoice")]
+    db.session.bulk_save_objects(objects)
+    db.session.commit()
+
+
+def add_quiz_sections_data():
+    objects = [QuizSection(name="open"), QuizSection(name="multichoice")]
+    db.session.bulk_save_objects(objects)
+    db.session.commit()
+
+
 def add_quizzes_data():
     objects = [
         Quiz(name='Introduction', description='Introduction to C Programming', creator_id=1,
@@ -81,6 +93,31 @@ def add_quizzes_data():
     db.session.commit()
 
 
+def add_quiz_questions_data():
+    objects = [
+        QuizQuestion(
+            quiz_id=1, question='What is the string output import?', question_type_id=2,
+            choices=[dict(a='#include<stdioh>', b='include<stdioh>', c='include<strout>', d='#include<strout>')]
+        ),
+        QuizQuestion(
+            quiz_id=1, question='Print statement?', question_type_id=2,
+            choices=[dict(a='printf()', b='print()', c='print', d='prinln')]
+        ),
+        QuizQuestion(
+            quiz_id=1, question='Which of the following is an access modifier?', question_type_id=2,
+            choices=[dict(a='private', b='strout', c='math', d='stdout')]
+        )
+    ]
+    db.session.bulk_save_objects(objects)
+    db.session.commit()
+
+
+def add_tutorship_requests_data():
+    objects = [MentorRequest(sender_id=2, receiver_id=1)]
+    db.session.bulk_save_objects(objects)
+    db.session.commit()
+
+
 @manager.command
 def create(default_data=True, sample_data=False):
     """
@@ -92,6 +129,9 @@ def create(default_data=True, sample_data=False):
     add_roles()
     add_demo_users()
     add_quizzes_data()
+    add_question_type_data()
+    add_quiz_questions_data()
+    add_tutorship_requests_data()
     sys.stdout.write("Finished creating tables!!! \n")
 
 
