@@ -18,6 +18,7 @@ class QuizQuestionsApi(MethodView):
             question_dict = v.__dict__
             del question_dict['_sa_instance_state']
             results.append(question_dict)
+        response_dict.update(results=results)
         return jsonify(response_dict)
 
 app.add_url_rule('/quiz/<pk>/questions', view_func=QuizQuestionsApi.as_view('quiz-questions'),
