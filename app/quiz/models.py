@@ -11,7 +11,7 @@ class Quiz(Base):
     __tablename__ = 'quizzes'
 
     name = db.Column(db.String(255))
-    description = db.Column(db.String(255), nullable=True)
+    description = db.Column(db.String(255))
     creator_id = db.Column(db.Integer, db.ForeignKey('account_users.id'))
     video_url = db.Column(db.Text, nullable=True)
     time_to_take = db.Column(db.Integer, nullable=True)
