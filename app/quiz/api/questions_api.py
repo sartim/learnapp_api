@@ -19,7 +19,7 @@ class QuizQuestionsApi(MethodView):
     @jwt_required
     def post(self):
         body = request.data
-        keys = ['quiz_id', 'question', 'question_type_id', 'choices', 'section_id']
+        keys = ['quiz_id', 'question', 'question_type_id', 'choices', 'section_id', 'answer']
         if not body:
             validated = validator.field_validator(keys, {})
             if not validated["success"]:
@@ -36,9 +36,10 @@ class QuizQuestionsApi(MethodView):
             question_type_id = body['question_type_id']
             choices = body['choices']
             section_id = body['section_id']
+            answer = body['answer']
             try:
                 question = QuizQuestion(quiz_id=quiz_id, question=question, question_type_id=question_type_id,
-                                    choices=choices, section_id=section_id)
+                                    choices=choices, section_id=section_id, answer=answer)
                 question.create(question)
                 question.save()
                 app.logger.debug("Successfully saved quiz")
