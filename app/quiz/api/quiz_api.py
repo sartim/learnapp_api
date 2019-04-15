@@ -20,7 +20,7 @@ class QuizApi(MethodView):
             quiz_dict = quiz.__dict__
             del quiz_dict['_sa_instance_state']
             return jsonify(quiz_dict)
-        if request.args.get('owned'):
+        if request.args.get('owned') == 'true':
             return jsonify(Quiz.get_owned(page))
         return jsonify(Quiz.get_all(page))
 
