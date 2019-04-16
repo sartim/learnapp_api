@@ -70,7 +70,7 @@ When using sqlite for test
     
 **Building & running on docker**
 
-    $ docker build -t flask-shop-api:latest .
+    $ docker build -t learn-app-api:latest .
 
 **Running unittests**
     
