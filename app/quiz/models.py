@@ -2,13 +2,15 @@ import os
 
 from flask_jwt_extended import current_user
 from app import db
+from app.core.mixins import SearchableMixin
 from app.core.models import Base
 from app.helpers import utils
 
 
-class Quiz(Base):
+class Quiz(Base, SearchableMixin):
 
     __tablename__ = 'quizzes'
+    __searchable__ = ['name', 'description']
 
     name = db.Column(db.String(255))
     description = db.Column(db.String(255))
