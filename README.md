@@ -51,6 +51,7 @@ When using sqlite for test
     APP_EMAIL={EMAIL}
     APP_EMAIL_PASSWORD={PASSWORD}
     LOG_LEVEL=DEBUG
+    ES_URL={ES_URL}
 
 **Running app using heroku cli**
 
