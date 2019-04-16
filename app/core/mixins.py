@@ -2,7 +2,7 @@ from app import db
 from app.core.indexing import add_to_index, remove_from_index, query_index
 
 
-class SearchableMixin(object):
+class SearchableMixin:
     @classmethod
     def search(cls, expression, page, per_page):
         ids, total = query_index(cls.__tablename__, expression, page, per_page, cls.__searchable__)
