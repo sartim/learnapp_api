@@ -1,5 +1,8 @@
 # Learn App API
 
+[![Language](https://img.shields.io/badge/language-python-green.svg)](https://github.com/sartim/learnapp_api)
+[![Build Status](https://travis-ci.com/sartim/flask_shop_api.svg?branch=master)](https://travis-ci.com/sartim/learnapp_api.svg?branch=master)
+
 REST API for a Learning Application
 
 ## Setup
