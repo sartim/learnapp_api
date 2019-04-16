@@ -26,6 +26,7 @@ def create_app():
         app.elasticsearch = elasticsearch
     if os.environ.get("TEST") == "TRUE":
         app.config.from_object(TestingConfig)
+        app.elasticsearch = None
     return app
 
 app = create_app()
