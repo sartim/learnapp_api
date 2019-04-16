@@ -1,11 +1,4 @@
-import os
-
-from flask_jwt_extended import current_user
-from sqlalchemy import desc
-from app.account.user.authenticated.models import AccountUserAuthenticated
 from app.account.user.models import AccountUser
-from app.account.user.role.models import AccountUserRole
-from app.core.mixins import SearchableMixin
 from app.core.models import Base
 from app import db
 from app.quiz.models import Quiz
