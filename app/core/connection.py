@@ -2,8 +2,9 @@ import os, re, logging
 from elasticsearch import Elasticsearch
 import certifi
 
+elasticsearch = None
 
-def elasticsearch():
+if os.environ.get('ES_URL'):
     # Log transport details (optional):
     logging.basicConfig(level=logging.INFO)
 
@@ -22,8 +23,7 @@ def elasticsearch():
     }]
 
     # Instantiate the new Elasticsearch connection:
-    elastic_search = Elasticsearch(es_header)
+    elasticsearch = Elasticsearch(es_header)
 
     # Verify that Python can talk to Bonsai (optional):
-    elastic_search.ping()
-    return elasticsearch
+    elasticsearch.ping()
