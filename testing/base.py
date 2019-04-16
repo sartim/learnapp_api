@@ -13,7 +13,8 @@ from app.mentor_requests.models import MentorRequest
 from app.quiz.invite.models import QuizInvite
 from app.helpers import utils
 from app.api_imports import *
-from manage import add_roles, add_demo_users, add_quizzes_data
+from manage import add_roles, add_demo_users, add_quizzes_data, add_question_type_data, add_quiz_questions_data, \
+    add_tutorship_requests_data
 
 
 class Base:
@@ -28,6 +29,9 @@ class Base:
             add_roles()
             add_demo_users()
             add_quizzes_data()
+            add_question_type_data()
+            add_quiz_questions_data()
+            add_tutorship_requests_data()
 
             r = cls.client.post('/account/generate/jwt/', json=dict(email='demotutor@mail.com', password='qwertytrewq'))
             cls.headers = {'Authorization': 'Bearer {}'.format(r.json['access_token'])}
