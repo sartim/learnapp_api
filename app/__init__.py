@@ -10,7 +10,7 @@ from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
 from app.config import DevelopmentConfig, ProductionConfig, TestingConfig
 from app.core import connection
-from app.core.connection import elastic_search
+from app.core.connection import elasticsearch
 
 dotenv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.env'))
 load_dotenv(dotenv_path)
@@ -20,11 +20,12 @@ def create_app():
     app = Flask(__name__)
     if os.environ.get('DEV') == "TRUE":
         app.config.from_object(DevelopmentConfig)
+        app.elasticsearch = elasticsearch
     if os.environ.get('PROD') == "TRUE":
         app.config.from_object(ProductionConfig)
+        app.elasticsearch = elasticsearch
     if os.environ.get("TEST") == "TRUE":
         app.config.from_object(TestingConfig)
-    app.elasticsearch = elastic_search
     return app
 
 app = create_app()
