@@ -9,7 +9,7 @@ REST API for a Learning Application
 
 **Requirements**
 
-* Python 3+
+* Python 3.6+
 * Virtualenv
 * Heroku CLI
 
