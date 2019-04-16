@@ -80,7 +80,7 @@ class AccountView(MethodView):
                 app.logger.warning(message)
                 return jsonify(message=message), 400
             role = AccountRole.get_by_name(body['role'])
-            if role == 1 or role == 2:
+            if role == 'ADMIN' or role == 'SUPERUSER':
                 if not current_user:
                     return jsonify(message='Forbidden to create user with the roles'), 403
             try:
