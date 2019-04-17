@@ -14,7 +14,8 @@ class QuizQuestion(Base):
     quiz_id = db.Column(db.Integer, db.ForeignKey('quizzes.id'))
     question = db.Column(db.String(255))
     question_type_id = db.Column(db.Integer, db.ForeignKey('quiz_question_types.id'))
-    quiz = db.relationship(Quiz, backref='quiz', lazy=True)
+
+    quiz = db.relationship(Quiz, backref='quiz_questions_quiz', lazy=True)
     type = db.relationship(QuizQuestionType, backref='quiz_question_type', lazy=True)
 
     def __init__(self, quiz_id=None, question=None, question_type_id=None):

@@ -16,7 +16,7 @@ class QuizProgress(Base):
     ended_date_time = db.Column(db.DateTime)
 
     quiz = db.relationship(Quiz, backref='quiz', lazy=True)
-    user = db.relationship(AccountUser, backref='account_user', lazy=True)
+    user = db.relationship(AccountUser, backref='quiz_progress_account_user', lazy=True)
     status = db.relationship(QuizStatus, backref='quiz_status', lazy=True)
 
 

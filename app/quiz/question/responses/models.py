@@ -12,8 +12,8 @@ class QuizQuestionResponse(Base):
     response = db.Column(db.String(255))
     user_id = db.Column(db.Integer, db.ForeignKey('account_users.id'))
 
-    question = db.relationship(QuizQuestion, backref='quiz', lazy=True)
-    user = db.relationship(AccountUser, backref='account_user', lazy=True)
+    question = db.relationship(QuizQuestion, backref='quiz_question_response', lazy=True)
+    user = db.relationship(AccountUser, backref='quiz_question_response_account_user', lazy=True)
 
     def __init__(self, question_id=None, response=None, user_id=None):
         self.question_id = question_id
