@@ -6,7 +6,7 @@ from app.quiz.question.models import QuizQuestion
 
 class QuizQuestionResponse(Base):
 
-    __tablename__ = 'quiz_questions'
+    __tablename__ = 'quiz_question_responses'
 
     question_id = db.Column(db.Integer, db.ForeignKey('quiz_questions.id'))
     response = db.Column(db.String(255))
