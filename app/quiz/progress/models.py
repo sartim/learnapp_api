@@ -10,8 +10,8 @@ class QuizProgress(Base):
     __tablename__ = 'quiz_progress'
 
     quiz_id = db.Column(db.Integer, db.ForeignKey('quizzes.id'))
-    user_id = db.Column(db.Integer, db.ForeignKey('account_users'))
-    status_id = db.Column(db.Integer, db.ForeignKey('quiz_statuses'))
+    user_id = db.Column(db.Integer, db.ForeignKey('account_users.id'))
+    status_id = db.Column(db.Integer, db.ForeignKey('quiz_statuses.id'))
     started_date_time = db.Column(db.DateTime)
     ended_date_time = db.Column(db.DateTime)
 
