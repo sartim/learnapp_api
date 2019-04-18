@@ -1,0 +1,71 @@
+{
+  "quiz": {
+    "name": "Introduction",
+    "description": "Introduction to C Programming",
+    "video_url": "https://www.youtube.com/embed/2NWeucMKrLI"
+  },
+  "question": [
+    {
+      "question": "What is the string output import?",
+      "question_type_id": 2,
+      "choices": {
+        "a": "#include<stdioh>",
+        "b": "include<stdioh>",
+        "c": "include<strout>",
+        "d": "#include<strout>"
+      },
+      "answer": "#include<stdioh>",
+      "data": [{
+        "user_id": 2
+        "progress": {
+          "status": 1,
+          "started_date_time": "2019-02-02 08:00:00",
+          "ended_date_time": "2019-02-02 09:00:00"
+        },
+        "answer": "#include<strout>"
+      }]
+    },
+    {
+      "question": "Print statement'",
+      "order_num": 1,
+      "question_type_id": 2,
+      "choices": {
+        "a": "printf()",
+        "b": "print()",
+        "c": "print",
+        "d": "prinln"
+      },
+      "answer": "print()",
+      "data": [{
+        "user_id": 2
+        "progress": {
+          "status": 1,
+          "started_date_time": "2019-02-02 08:00:00",
+          "ended_date_time": "2019-02-02 09:00:00"
+        },
+        "answer": "print()"
+      }]
+    },
+    {
+      "question": "Which of the following is an access modifier?",
+      "order_num": 2,
+      "question_type_id": 2,
+      "answer": "private",
+      "choices": {
+        "a": "private",
+        "b":"strout",
+        "c": "math",
+        "d": "stdout"
+      },
+      "data": [{
+        "user_id": 2,
+        "progress": {
+          "status": 1,
+          "started_date_time": "2019-02-02 08:00:00",
+          "ended_date_time": "2019-02-02 09:00:00"
+        },
+        "answer": "private"
+      }]
+    }
+  ]
+}
