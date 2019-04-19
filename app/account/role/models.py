@@ -16,3 +16,12 @@ class AccountRole(Base):
     @classmethod
     def get_by_name(cls, name):
         return cls.query.filter_by(name=name).first()
+
+    @classmethod
+    def get_or_create(cls, role):
+        obj = cls.get_by_name(role)
+        if obj:
+            return obj
+        obj = cls(role)
+        obj.create(obj)
+        return obj
