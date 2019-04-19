@@ -3,9 +3,11 @@
     "quiz": {
       "name": "Introduction",
       "description": "Introduction to C Programming",
-      "video_url": "https://www.youtube.com/embed/2NWeucMKrLI"
+      "video_url": "https://www.youtube.com/embed/2NWeucMKrLI",
+      "time_to_take": 30,
+      "section_id": 1
     },
-    "question": [
+    "questions": [
       {
         "question": "What is the string output import?",
         "question_type_id": 2,
@@ -17,7 +19,7 @@
         },
         "answer": "#include<stdioh>",
         "data": [{
-          "user_id": 2
+          "user_id": 2,
           "progress": {
             "status": 1,
             "started_date_time": "2019-02-02 08:00:00",
@@ -38,7 +40,7 @@
         },
         "answer": "print()",
         "data": [{
-          "user_id": 2
+          "user_id": 2,
           "progress": {
             "status": 1,
             "started_date_time": "2019-02-02 08:00:00",
