@@ -28,6 +28,19 @@ class AccountUserRole(db.Model):
         return obj
 
     @classmethod
+    def get_by_user_and_role(cls, user_id, role_id):
+        return cls.query.filter_by(user_id=user_id).filter_by(role_id=role_id).first()
+
+    @classmethod
+    def get_or_create(cls, user_id, role_id):
+        obj = cls.get_by_user_and_role(user_id, role_id)
+        if obj:
+            return obj
+        obj = cls(user_id, role_id)
+        obj.create(obj)
+        return obj
+
+    @classmethod
     def save(cls):
         try:
             db.session.commit()
