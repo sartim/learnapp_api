@@ -3,6 +3,7 @@ from app import app, db
 from app.account.role.models import AccountRole
 from app.account.user.models import AccountUser
 from app.account.user.role.models import AccountUserRole
+from app.core import seeder
 from app.quiz.models import Quiz
 from app.quiz.question.models import QuizQuestion
 from app.quiz.question.answer.models import QuizQuestionAnswer
@@ -13,8 +14,6 @@ from app.mentor_requests.models import MentorRequest
 from app.quiz.invite.models import QuizInvite
 from app.helpers import utils
 from app.api_imports import *
-from manage import add_roles, add_demo_users, add_quizzes_data, add_question_type_data, add_quiz_questions_data, \
-    add_tutorship_requests_data
 
 
 class Base:
@@ -26,12 +25,12 @@ class Base:
             upgrade()
             db.create_all()
 
-            add_roles()
-            add_demo_users()
-            add_quizzes_data()
-            add_question_type_data()
-            add_quiz_questions_data()
-            add_tutorship_requests_data()
+            seeder.add_users()
+            seeder.add_question_type()
+            seeder.add_quiz_statuses()
+            seeder.add_quiz_sections()
+            seeder.add_tutorship_requests()
+            seeder.add_quiz()
 
             r = cls.client.post('/account/generate/jwt/', json=dict(email='demotutor@mail.com', password='qwertytrewq'))
             cls.headers = {'Authorization': 'Bearer {}'.format(r.json['access_token'])}
