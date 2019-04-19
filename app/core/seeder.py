@@ -21,10 +21,10 @@ def get_test_data(file):
 
 
 class QuizSeeder:
-    def __init__(self, name, description, time_taken, section_id, questions):
+    def __init__(self, name, description, time_to_take, section_id, questions):
         self.name = name
         self.description = description
-        self.time_taken = time_taken
+        self.time_to_take = time_to_take
         self.section_id = section_id
         self.questions = questions
 
@@ -108,7 +108,8 @@ def add_users():
 def add_quiz():
     data = get_test_data('quiz_data.json')
     for v in data:
-        QuizSeeder(name=v['name'], description=v['description'], time_taken=v['time_taken'], section_id=v['section_id'],
+        QuizSeeder(name=v['quiz']['name'], description=v['quiz']['description'], time_to_take=v['quiz']['time_to_take'],
+                   section_id=v['quiz']['section_id'],
                    questions=v['questions']).create()
 
 def add_tutorship_requests():
