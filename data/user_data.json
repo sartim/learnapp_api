@@ -1,0 +1,18 @@
+[
+  {
+    "first_name": "Demo",
+    "last_name": "Tutor",
+    "email": "demotutor@mail.com",
+    "phone": "0233432424",
+    "password": "qwertytrewq",
+    "roles": ["TUTOR"]
+  },
+  {
+    "first_name": "Demo",
+    "last_name": "Learner",
+    "email": "demolearner@mail.com",
+    "phone": "43590355353",
+    "password": "qwertytrewq",
+    "roles": ["LEARNER"]
+  }
+]
