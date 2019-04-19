@@ -8,9 +8,14 @@ from flask_script import Manager, prompt_bool, Shell, prompt_pass
 from app.account.role.models import AccountRole
 from app.account.user.models import AccountUser
 from app.account.user.role.models import AccountUserRole
+from app.core import seeder
 from app.quiz.models import Quiz
+from app.quiz.question.choices.models import QuizQuestionChoice
+from app.quiz.rating.models import QuizRating
+from app.quiz.progress.models import QuizProgress
 from app.quiz.question.models import QuizQuestion
 from app.quiz.question.answer.models import QuizQuestionAnswer
+from app.quiz.question.responses.models import QuizQuestionResponse
 from app.quiz.question.type.models import QuizQuestionType
 from app.quiz.section.models import QuizSection
 from app.quiz.status.models import QuizStatus
@@ -38,87 +43,6 @@ def runserver():
     socketio.run(app, host='0.0.0.0', port=5000)
 
 
-def add_roles():
-    objects = [
-        AccountRole(name='SUPERUSER'), AccountRole(name='ADMIN'), AccountRole(name='TUTOR'),
-        AccountRole(name='LEARNER')
-    ]
-    db.session.bulk_save_objects(objects)
-    db.session.commit()
-
-
-def add_demo_users():
-    user = AccountUser(first_name="Demo", last_name="Tutor", email="demotutor@mail.com",
-                       password=utils.generate_password_hash("qwertytrewq"), is_active=True)
-    db.session.add(user)
-    db.session.commit()
-    user_role = AccountUserRole(user_id=user.id, role_id=3)
-    db.session.add(user_role)
-    db.session.commit()
-    user = AccountUser(first_name="Demo", last_name="Learner", email="demolearner@mail.com",
-                       password=utils.generate_password_hash("qwertytrewq"), is_active=True)
-    db.session.add(user)
-    db.session.commit()
-    user_role = AccountUserRole(user_id=user.id, role_id=4)
-    db.session.add(user_role)
-    db.session.commit()
-
-
-def add_question_type_data():
-    objects = [QuizQuestionType(name="open"), QuizQuestionType(name="multichoice")]
-    db.session.bulk_save_objects(objects)
-    db.session.commit()
-
-
-def add_quiz_sections_data():
-    objects = [QuizSection(name="open"), QuizSection(name="multichoice")]
-    db.session.bulk_save_objects(objects)
-    db.session.commit()
-
-
-def add_quizzes_data():
-    objects = [
-        Quiz(name='Introduction', description='Introduction to C Programming', creator_id=1,
-             video_url='https://www.youtube.com/embed/2NWeucMKrLI'),
-        Quiz(name='Setting Up Code blocks', description='Configuration setup for environment using various IDEs',
-             creator_id=1, video_url='https://www.youtube.com/embed/3DeLiClDd04'),
-        Quiz(name='How Computer Programs Work', description='Learn how computer programs execute',
-             creator_id=1, video_url='https://www.youtube.com/embed/iWx3yyFMWQA'),
-        Quiz(name='Print', description='Learn how to print text on the console',
-             creator_id=1, video_url='https://www.youtube.com/embed/oSpmApiUsHw'),
-        Quiz(name='Commenting', description='Learn how to use various comments depending on use case',
-             creator_id=1, video_url='https://www.youtube.com/embed/oSpmApiUsHw')
-    ]
-    db.session.bulk_save_objects(objects)
-    db.session.commit()
-
-
-def add_quiz_questions_data():
-    objects = [
-        QuizQuestion(
-            quiz_id=1, question='What is the string output import?', question_type_id=2,
-            choices=[dict(a='#include<stdioh>', b='include<stdioh>', c='include<strout>', d='#include<strout>')],
-            answer='#include<stdioh>'
-        ),
-        QuizQuestion(
-            quiz_id=1, question='Print statement?', question_type_id=2,
-            choices=[dict(a='printf()', b='print()', c='print', d='prinln')], answer='print()'
-        ),
-        QuizQuestion(
-            quiz_id=1, question='Which of the following is an access modifier?', question_type_id=2,
-            choices=[dict(a='private', b='strout', c='math', d='stdout')], answer='private'
-        )
-    ]
-    db.session.bulk_save_objects(objects)
-    db.session.commit()
-
-
-def add_tutorship_requests_data():
-    object = MentorRequest(sender_id=2, receiver_id=1)
-    db.session.add(object)
-    db.session.commit()
-
-
 @manager.command
 def create(default_data=True, sample_data=False):
     """
@@ -127,12 +51,13 @@ def create(default_data=True, sample_data=False):
     :param sample_data:
     """
     db.create_all()
-    add_roles()
-    add_demo_users()
-    add_quizzes_data()
-    add_question_type_data()
-    add_quiz_questions_data()
-    add_tutorship_requests_data()
+    seeder.add_roles()
+    seeder.add_users()
+    seeder.add_question_type()
+    seeder.add_quiz_statuses()
+    seeder.add_quiz_sections()
+    seeder.add_tutorship_requests()
+    seeder.add_quiz()
     sys.stdout.write("Finished creating tables!!! \n")
 
 
