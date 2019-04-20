@@ -7,6 +7,7 @@ from app.account.user.models import AccountUser
 from app.account.user.role.models import AccountUserRole
 from app.helpers import utils
 from app.mentor_requests.models import MentorRequest
+from app.quiz.models import Quiz
 from app.quiz.question.type.models import QuizQuestionType
 from app.quiz.section.models import QuizSection
 from app.quiz.status.models import QuizStatus
@@ -21,16 +22,29 @@ def get_test_data(file):
 
 
 class QuizSeeder:
-    def __init__(self, name, description, time_to_take, section_id, questions):
+    def __init__(self, name, creator_id, video_url, description, time_to_take, needs_invite, section_id, questions):
         self.name = name
         self.description = description
+        self.creator_id = creator_id
+        self.video_url = video_url
         self.time_to_take = time_to_take
+        self.needs_invite = needs_invite
         self.section_id = section_id
         self.questions = questions
 
+    def create_quiz(self):
+        quiz = Quiz(name=self.name, description=self.description, creator_id=self.creator_id, video_url=self.video_url,
+             time_to_take=self.time_to_take, needs_invite=self.needs_invite, section_id=self.section_id)
+        db.session.add(quiz)
+        quiz.save()
 
-    def create(self):
-        pass
+    @classmethod
+    def save(cls):
+        try:
+            db.session.commit()
+            app.logger.debug('Successfully committed {} instance'.format(cls.__name__))
+        except Exception:
+            app.logger.exception('Exception occurred. Could not save {} instance.'.format(cls.__name__))
 
 
 class UserSeeder:
@@ -108,11 +122,12 @@ def add_users():
 def add_quiz():
     data = get_test_data('quiz_data.json')
     for v in data:
-        QuizSeeder(name=v['quiz']['name'], description=v['quiz']['description'], time_to_take=v['quiz']['time_to_take'],
-                   section_id=v['quiz']['section_id'],
-                   questions=v['questions']).create()
+        QuizSeeder(name=v['quiz']['name'], creator_id=v['quiz']['creator_id'], video_url=v['quiz']['video_url'],
+                   description=v['quiz']['description'], time_to_take=v['quiz']['time_to_take'],
+                   needs_invite=v['quiz']['needs_invite'], section_id=v['quiz']['section_id'],
+                   questions=v['questions']).create_quiz()
 
 def add_tutorship_requests():
-    object = MentorRequest(sender_id=2, receiver_id=1)
-    db.session.add(object)
+    obj = MentorRequest(sender_id=2, receiver_id=1)
+    db.session.add(obj)
     db.session.commit()
