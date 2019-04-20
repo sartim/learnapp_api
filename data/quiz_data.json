@@ -5,7 +5,9 @@
       "description": "Introduction to C Programming",
       "video_url": "https://www.youtube.com/embed/2NWeucMKrLI",
       "time_to_take": 30,
-      "section_id": 1
+      "section_id": 1,
+      "creator_id": 1,
+      "needs_invite": false
     },
     "questions": [
       {
