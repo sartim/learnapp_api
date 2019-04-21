@@ -7,6 +7,7 @@ from app.account.user.role.models import AccountUserRole
 from app.core.mixins import SearchableMixin
 from app.core.models import Base
 from app import db
+from app.helpers import utils
 
 
 class AccountUser(Base, SearchableMixin):
@@ -87,5 +88,19 @@ class AccountUser(Base, SearchableMixin):
 
     @classmethod
     def get_all(cls, page):
-        return cls.query.order_by(desc(cls.created_date)) \
+        paginated_objs =  cls.query.order_by(desc(cls.created_date)) \
             .paginate(page=page, per_page=int(os.environ.get('PAGINATE_BY')), error_out=False)
+        return cls.response(paginated_objs, '/quiz/')
+
+    @classmethod
+    def response(cls, paginated_objs, url):
+        results = []
+        for obj in paginated_objs.items:
+            data = dict(
+                id=obj.id, first_name=obj.first_name, middle_name=obj.middle_name, last_name=obj.last_name,
+                email=obj.email, phone=obj.phone, roles=[v.role.name for v in obj.roles] if obj.roles else [],
+                is_active=obj.is_active
+            )
+            results.append(data)
+        data = utils.response_dict(paginated_objs, results, url)
+        return data
