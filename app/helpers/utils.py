@@ -1,4 +1,6 @@
 import secrets
+from collections import ChainMap
+
 import bcrypt
 import flask
 
@@ -34,6 +36,16 @@ def generate_token_urlsafe(nbytes=None):
     :return:
     """
     return secrets.token_urlsafe(nbytes)
+
+
+def MergeDictList(dict_list):
+    """
+    Python 3.3+ ChainMap()
+    groups multiple dicts
+    :param dict_list:
+    :return:
+    """
+    return dict(ChainMap(*dict_list))
 
 
 def response_dict(obj, results, path, id=None):
