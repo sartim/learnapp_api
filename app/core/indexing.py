@@ -23,9 +23,7 @@ def query_index(index, query, page, per_page, fields):
     body = {'query': {'multi_match': {'query': query, 'fields': fields}},
               'from': (page - 1) * per_page, 'size': per_page}
     app.logger.info("Elastic Search Query: \n{}".format(body))
-    search = current_app.elasticsearch.search(
-        index=index, doc_type=index,
-        body=body)
+    search = current_app.elasticsearch.search(index=index, body=body)
     app.logger.info("Elastic Search Response: \n{}".format(search))
     ids = [hit['_id'] for hit in search['hits']['hits']]
     return ids, search['hits']['total']
