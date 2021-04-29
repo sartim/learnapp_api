@@ -1,0 +1,30 @@
+version: 2
+updates:
+- package-ecosystem: pip
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: python-dotenv
+    versions:
+    - 0.15.0
+    - 0.16.0
+  - dependency-name: elasticsearch
+    versions:
+    - 7.10.1
+    - 7.11.0
+    - 7.12.0
+  - dependency-name: flask-jwt-extended
+    versions:
+    - 3.25.0
+    - 4.0.2
+  - dependency-name: flask-migrate
+    versions:
+    - 2.6.0
+  - dependency-name: flask-sqlalchemy
+    versions:
+    - 2.4.4
+  - dependency-name: gunicorn
+    versions:
+    - 20.0.4
